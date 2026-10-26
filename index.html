@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071a38">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Cypress Engineering turns business needs into practical solutions through systems engineering, consulting, digital solutions, product development and project delivery.">
+  <link rel="icon" type="image/png" href="assets/cypress-mark.png">
+  <title>Cypress Engineering | Engineering Ideas into Practical Solutions</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #071a38;
+      --navy-soft: #10294f;
+      --blue: #1677f9;
+      --blue-bright: #48a0ff;
+      --ink: #10213a;
+      --muted: #68778b;
+      --pale: #f3f7fc;
+      --line: #e2e9f2;
+      --white: #fff;
+      --radius: 18px;
+      --shadow: 0 24px 70px rgba(7, 26, 56, .12);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--white); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .container { width: min(1160px, calc(100% - 48px)); margin-inline: auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; margin: 0 0 18px;
+      color: var(--blue); font-size: .76rem; font-weight: 800; letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 25px; height: 2px; background: currentColor; content: ""; }
+    .section-heading { max-width: 650px; margin-bottom: 42px; }
+    .section-heading h2 { margin: 0 0 14px; color: var(--navy); font-size: clamp(2rem, 4vw, 3.15rem); line-height: 1.12; letter-spacing: -.045em; }
+    .section-heading > p:last-child { margin: 0; color: var(--muted); font-size: 1.04rem; }
+
+    .site-header {
+      position: sticky; z-index: 20; top: 0; background: rgba(255,255,255,.94);
+      border-bottom: 1px solid rgba(226,233,242,.85); backdrop-filter: blur(14px);
+    }
+    .preview-banner { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 34px; padding: 6px 15px; color: #43566e; background: #edf4fc; font-size: .72rem; text-align: center; }
+    .preview-banner strong { color: #145db5; font-size: .66rem; font-weight: 850; letter-spacing: .1em; }
+    .nav { min-height: 78px; display: flex; justify-content: space-between; align-items: center; gap: 30px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-symbol { width: 41px; height: 45px; flex: 0 0 41px; object-fit: contain; }
+    .brand-lockup { display: block; min-width: 0; }
+    .brand-wordmark { display: block; width: 155px; height: 44px; object-fit: fill; }
+    .nav-links { display: flex; align-items: center; gap: 30px; padding: 0; margin: 0; list-style: none; }
+    .nav-links a { color: #40516a; font-size: .88rem; font-weight: 650; transition: color .2s; }
+    .nav-links a:hover { color: var(--blue); }
+    .button {
+      display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+      min-height: 49px; padding: 0 21px; border: 1px solid transparent; border-radius: 9px;
+      background: var(--blue); color: white; font-size: .9rem; font-weight: 750;
+      box-shadow: 0 8px 20px rgba(22,119,249,.2); transition: transform .2s, background .2s, box-shadow .2s;
+      cursor: pointer;
+    }
+    .button:hover { background: #0867e5; box-shadow: 0 11px 26px rgba(22,119,249,.28); transform: translateY(-2px); }
+    .button svg { width: 17px; height: 17px; }
+    .button-outline { color: white; border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.06); box-shadow: none; }
+    .button-outline:hover { color: var(--navy); background: white; box-shadow: none; }
+    .menu-toggle { display: none; width: 44px; height: 44px; padding: 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--navy); background: white; cursor: pointer; }
+    .menu-toggle svg { width: 22px; height: 22px; }
+
+    .hero {
+      position: relative; overflow: hidden; color: white;
+      background: radial-gradient(ellipse at 77% 42%, rgba(31,112,206,.28), transparent 39%), var(--navy);
+    }
+    .hero::before {
+      position: absolute; inset: 0; opacity: .22; pointer-events: none; content: "";
+      background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+      background-size: 48px 48px; mask-image: linear-gradient(90deg, transparent, #000 70%);
+    }
+    .hero-inner { position: relative; display: grid; min-height: 610px; grid-template-columns: 1.03fr .97fr; align-items: center; gap: 32px; padding-block: 72px; }
+    .hero-copy { position: relative; z-index: 1; max-width: 620px; padding-block: 20px; }
+    .hero .eyebrow { color: #81bdff; }
+    .hero h1 { max-width: 620px; margin: 0; font-size: clamp(3.15rem, 6.3vw, 5.4rem); line-height: .99; letter-spacing: -.065em; }
+    .hero h1 span { color: #62adff; }
+    .hero-copy > p { max-width: 540px; margin: 24px 0 30px; color: #c5d2e3; font-size: 1.08rem; line-height: 1.75; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-note { display: flex; align-items: center; gap: 10px; margin-top: 33px; color: #acbdd2; font-size: .8rem; }
+    .hero-note span { width: 7px; height: 7px; border-radius: 50%; background: #4ca0ff; box-shadow: 0 0 0 5px rgba(76,160,255,.12); }
+    .hero-art { position: relative; display: grid; min-height: 425px; place-items: center; }
+    .hero-art::before { position: absolute; width: min(93%, 440px); aspect-ratio: 1; border: 1px solid rgba(114,178,244,.15); border-radius: 50%; content: ""; }
+    .hero-art::after { position: absolute; width: 74%; aspect-ratio: 1; border: 1px solid rgba(114,178,244,.12); border-radius: 50%; content: ""; }
+    .blueprint { position: relative; z-index: 1; width: min(100%, 515px); filter: drop-shadow(0 24px 40px rgba(0,0,0,.22)); }
+    .float-tag {
+      position: absolute; z-index: 2; display: flex; align-items: center; gap: 11px; padding: 13px 16px;
+      border: 1px solid rgba(255,255,255,.16); border-radius: 12px; background: rgba(13,39,75,.8);
+      color: #e8f2ff; box-shadow: 0 14px 38px rgba(0,0,0,.2); backdrop-filter: blur(12px);
+      font-size: .78rem; font-weight: 700;
+    }
+    .float-tag svg { width: 21px; height: 21px; color: #69b2ff; }
+    .tag-top { top: 11%; right: -2%; }
+    .tag-bottom { bottom: 12%; left: 1%; }
+
+    .trust-strip { border-bottom: 1px solid var(--line); background: white; }
+    .trust-inner { display: grid; grid-template-columns: repeat(3,1fr); padding-block: 27px; }
+    .trust-item { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 4px 18px; color: var(--navy); font-size: .87rem; font-weight: 700; }
+    .trust-item + .trust-item { border-left: 1px solid var(--line); }
+    .trust-item svg { width: 22px; height: 22px; flex: 0 0 auto; color: var(--blue); }
+
+    .section { padding-block: 100px; }
+    .services { background: var(--pale); }
+    .service-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .service-card { min-height: 220px; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); background: white; transition: transform .22s, box-shadow .22s, border-color .22s; }
+    .service-card:hover { transform: translateY(-5px); border-color: #c5dcf8; box-shadow: var(--shadow); }
+    .service-icon { display: grid; width: 46px; height: 46px; margin-bottom: 20px; place-items: center; border-radius: 13px; color: var(--blue); background: #eaf3ff; }
+    .service-icon svg { width: 25px; height: 25px; }
+    .service-card h3 { margin: 0 0 9px; color: var(--navy); font-size: 1.13rem; letter-spacing: -.02em; }
+    .service-card p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.7; }
+    .project-types { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; margin-top: 35px; }
+    .project-type { padding: 27px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+    .project-type h3 { margin: 0 0 9px; color: var(--navy); font-size: 1.12rem; }
+    .project-type p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.75; }
+    .why-section { background: var(--pale); }
+    .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .why-card { padding: 23px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+    .why-card h3 { margin: 0 0 8px; color: var(--navy); font-size: 1rem; }
+    .why-card p { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.7; }
+    .project-cta { position: relative; overflow: hidden; color: white; background: linear-gradient(120deg, #0a2144, #104a88); }
+    .project-cta::after { position: absolute; top: -140px; right: -80px; width: 370px; height: 370px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; box-shadow: 0 0 0 42px rgba(255,255,255,.025),0 0 0 84px rgba(255,255,255,.02); content: ""; }
+    .project-cta-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 35px; }
+    .project-cta .eyebrow { color: #81bdff; }
+    .project-cta h2 { max-width: 720px; margin: 0 0 12px; font-size: clamp(2rem,4vw,3rem); line-height: 1.1; letter-spacing: -.045em; }
+    .project-cta p:not(.eyebrow) { max-width: 720px; margin: 0; color: #c1cee0; }
+    .project-cta .button { flex: 0 0 auto; background: white; color: var(--navy); box-shadow: none; }
+    .project-cta .button:hover { background: #eaf3ff; }
+    .app-download { padding-block: 27px; border-bottom: 1px solid var(--line); background: white; }
+    .app-download-inner { display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .app-download-copy { display: flex; align-items: center; gap: 15px; }
+    .app-download-icon { display: grid; width: 48px; height: 48px; flex: 0 0 auto; place-items: center; border-radius: 13px; color: var(--blue); background: #eaf3ff; }
+    .app-download-icon svg { width: 25px; height: 25px; }
+    .app-download h2 { margin: 0 0 3px; color: var(--navy); font-size: 1.05rem; }
+    .app-download p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .app-download-status { padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; color: #52647b; font-size: .74rem; font-weight: 700; white-space: nowrap; }
+
+    .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 80px; }
+    .about-visual { position: relative; display: grid; min-height: 410px; overflow: hidden; place-items: center; border-radius: 22px; background: linear-gradient(145deg, #0b2851, #0e4d91); }
+    .about-visual::before, .about-visual::after { position: absolute; width: 390px; height: 390px; border: 1px solid rgba(255,255,255,.13); border-radius: 50%; content: ""; }
+    .about-visual::after { width: 275px; height: 275px; }
+    .about-visual svg { position: relative; z-index: 1; width: 80%; max-width: 350px; }
+    .about-caption { position: absolute; z-index: 2; right: 18px; bottom: 18px; left: 18px; padding: 15px 17px; border: 1px solid rgba(255,255,255,.17); border-radius: 11px; color: white; background: rgba(7,26,56,.54); backdrop-filter: blur(10px); font-size: .82rem; font-weight: 700; }
+    .about-copy .section-heading { margin: 0; }
+    .about-copy .section-heading > p:last-child { line-height: 1.8; }
+    .check-list { display: grid; gap: 14px; padding: 0; margin: 26px 0 0; list-style: none; }
+    .check-list li { display: flex; align-items: flex-start; gap: 11px; color: #40516a; font-size: .91rem; }
+    .check-list svg { width: 19px; height: 19px; flex: 0 0 auto; margin-top: 2px; color: var(--blue); }
+
+    .contact { background: var(--pale); }
+    .contact-grid { display: grid; grid-template-columns: .8fr 1.2fr; align-items: start; gap: 70px; }
+    .contact-copy h2 { margin: 0 0 16px; color: var(--navy); font-size: clamp(2.1rem,4vw,3.1rem); line-height: 1.12; letter-spacing: -.045em; }
+    .contact-copy > p { margin: 0; color: var(--muted); line-height: 1.8; }
+    .contact-details { display: grid; gap: 16px; margin-top: 30px; }
+    .contact-detail { display: flex; align-items: center; gap: 13px; color: #40516a; font-size: .9rem; }
+    .detail-icon { display: grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line); border-radius: 12px; color: var(--blue); background: white; }
+    .detail-icon svg { width: 20px; height: 20px; }
+    .contact-detail small { display: block; color: var(--muted); font-size: .72rem; }
+    .form-card { padding: 34px; border: 1px solid var(--line); border-radius: var(--radius); background: white; box-shadow: 0 14px 45px rgba(7,26,56,.06); }
+    .form-card h3 { margin: 0 0 5px; color: var(--navy); font-size: 1.35rem; }
+    .form-intro { margin: 0 0 23px; color: var(--muted); font-size: .87rem; }
+    .form-fields { min-width: 0; padding: 0; margin: 0; border: 0; }
+    .form-fields:disabled { opacity: .66; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .field { display: grid; gap: 7px; margin-bottom: 16px; }
+    .field label { color: #34445b; font-size: .81rem; font-weight: 700; }
+    .field input, .field select, .field textarea { width: 100%; min-height: 47px; padding: 11px 13px; border: 1px solid #dbe3ed; border-radius: 8px; outline: none; color: var(--ink); background: white; transition: border .2s, box-shadow .2s; }
+    .field textarea { min-height: 125px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(22,119,249,.12); }
+    .form-card .button { width: 100%; margin-top: 2px; }
+    .form-card .button:disabled { color: white; background: #8796aa; box-shadow: none; cursor: not-allowed; transform: none; }
+    .privacy-note { margin: 13px 0 0; color: var(--muted); font-size: .73rem; text-align: center; }
+    .site-footer { padding-block: 28px; color: #b5c3d6; background: #05142b; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    .footer-inner p { margin: 0; font-size: .76rem; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .footer-links a { color: #d1ddec; font-size: .8rem; }
+    .footer-links a:hover { color: white; }
+    .whatsapp-float { position: fixed; z-index: 30; right: 22px; bottom: 22px; display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 19px; border: 1px solid rgba(255,255,255,.18); border-radius: 999px; color: white; background: #128c7e; box-shadow: 0 10px 30px rgba(4,60,50,.28); font-size: .88rem; font-weight: 750; transition: transform .2s, background .2s; }
+    .whatsapp-float:hover { transform: translateY(-3px); background: #0a796d; }
+    .whatsapp-float svg { width: 23px; height: 23px; }
+
+    @media (max-width: 900px) {
+      .nav-links { gap: 19px; }
+      .nav-links a { font-size: .82rem; }
+      .nav > .button { padding-inline: 15px; }
+      .hero-inner { min-height: 560px; grid-template-columns: 1fr  .85fr; gap: 0; }
+      .hero-art { min-height: 370px; }
+      .tag-top { right: -4%; }
+      .service-grid { grid-template-columns: repeat(2,1fr); }
+      .why-grid { grid-template-columns: repeat(2,1fr); }
+      .about-grid { gap: 45px; }
+      .contact-grid { gap: 40px; }
+    }
+    @media (max-width: 700px) {
+      .container { width: min(100% - 36px, 540px); }
+      .nav { min-height: 70px; }
+      .brand-wordmark { width: 138px; height: 39px; }
+      .brand-symbol { width: 37px; height: 41px; flex-basis: 37px; }
+      .menu-toggle { display: grid; place-items: center; margin-left: auto; }
+      .nav > .button { display: none; }
+      .nav-links {
+        position: absolute; top: calc(100% + 1px); right: 0; left: 0; display: none; align-items: stretch;
+        gap: 0; padding: 8px 18px 16px; border-bottom: 1px solid var(--line); background: white;
+        box-shadow: 0 14px 20px rgba(7,26,56,.07);
+      }
+      .nav-links.is-open { display: flex; flex-direction: column; }
+      .nav-links li a { display: block; padding: 12px 8px; font-size: .92rem; }
+      .hero-inner { min-height: 0; grid-template-columns: 1fr; gap: 10px; padding-block: 67px 35px; }
+      .hero h1 { max-width: 540px; font-size: clamp(3rem, 13vw, 4.7rem); }
+      .hero-copy > p { font-size: 1rem; }
+      .hero-art { min-height: 315px; }
+      .blueprint { width: min(100%, 410px); }
+      .hero-art::before { width: min(90%, 330px); }
+      .hero-art::after { width: min(72%, 265px); }
+      .tag-top { top: 5%; right: 0; }
+      .tag-bottom { bottom: 5%; left: 0; }
+      .float-tag { padding: 10px 12px; font-size: .7rem; }
+      .trust-inner { grid-template-columns: 1fr; padding-block: 12px; }
+      .trust-item { justify-content: flex-start; padding: 13px 4px; }
+      .trust-item + .trust-item { border-top: 1px solid var(--line); border-left: 0; }
+      .section { padding-block: 72px; }
+      .section-heading { margin-bottom: 30px; }
+      .service-grid { grid-template-columns: 1fr; gap: 13px; }
+      .project-types, .why-grid { grid-template-columns: 1fr; }
+      .service-card { min-height: 0; padding: 24px; }
+      .service-icon { margin-bottom: 17px; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 35px; }
+      .project-cta-inner { align-items: flex-start; flex-direction: column; }
+      .project-cta .button { width: 100%; }
+      .about-visual { min-height: 330px; }
+      .about-copy { grid-row: 1; }
+      .app-download-inner { align-items: flex-start; flex-direction: column; gap: 14px; }
+      .app-download-status { white-space: normal; }
+      .contact-grid { gap: 28px; }
+      .form-card { padding: 25px 20px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; gap: 15px; }
+    }
+    @media (max-width: 420px) {
+      .container { width: calc(100% - 30px); }
+      .brand { gap: 7px; }
+      .brand-wordmark { width: 116px; height: 33px; }
+      .brand-symbol { width: 32px; height: 35px; flex-basis: 32px; }
+      .whatsapp-float { right: 14px; bottom: 14px; min-height: 50px; padding-inline: 15px; font-size: .82rem; }
+      .hero-actions .button { width: 100%; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="preview-banner" aria-label="Preview status">
+    <strong>CLIENT PREVIEW</strong>
+    <span>Draft for review · Email contact and app download details are pending</span>
+  </aside>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="Cypress Engineering home">
+        <img class="brand-symbol" src="assets/cypress-mark.png" alt="">
+        <span class="brand-lockup">
+          <img class="brand-wordmark" src="assets/cypress-wordmark.png" alt="Cypress Engineering">
+        </span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#why">Our approach</a></li>
+        <li><a href="#app">App</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a class="button" href="#contact">Discuss a project <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-inner container">
+        <div class="hero-copy">
+          <p class="eyebrow">Engineering, systems &amp; innovation</p>
+          <h1>Engineering ideas into <span>practical solutions.</span></h1>
+          <p>We combine engineering, science and technology with systems thinking to help businesses solve technical problems, improve operations and develop new products and systems.</p>
+          <div class="hero-actions">
+            <a class="button" href="#contact">Discuss your project <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="button button-outline" href="#services">Explore our capabilities</a>
+          </div>
+          <div class="hero-note"><span aria-hidden="true"></span> From requirements to implementation and verification</div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of an engineered structure" role="img">
+          <svg class="blueprint" viewBox="0 0 520 440" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="beam" x1="100" y1="90" x2="390" y2="360" gradientUnits="userSpaceOnUse"><stop stop-color="#67B7FF"/><stop offset="1" stop-color="#1677F9"/></linearGradient>
+              <linearGradient id="glass" x1="155" y1="130" x2="363" y2="340" gradientUnits="userSpaceOnUse"><stop stop-color="#69B5FF" stop-opacity=".34"/><stop offset="1" stop-color="#1677F9" stop-opacity=".04"/></linearGradient>
+            </defs>
+            <path d="M77 361h365M103 383h315M145 109h251M167 89h211" stroke="#78B8F2" stroke-opacity=".45" stroke-width="1.4"/>
+            <path d="m125 346 50-217 68 217M175 129h141M193 202h145M175 273h166" stroke="url(#beam)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="m243 346 66-217 65 217M309 129l48 217M264 273h109M286 202h88" stroke="url(#beam)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="m183 160 124 29m-137 48 148 35m-159 29 169 38m-95-219 62 217m-26-217 61 217" stroke="#9DD0FF" stroke-opacity=".72" stroke-width="2"/>
+            <path d="m151 345 25-106 183 0 32 106H151Z" fill="url(#glass)" stroke="#82C2FF" stroke-opacity=".8" stroke-width="1.5"/>
+            <path d="M214 345v-46h49v46m29 0v-69h34v69M187 264h165M197 291h147" stroke="#B4DCFF" stroke-opacity=".9" stroke-width="2"/>
+            <path d="M90 110h59m-30-30v60m289 175h45m-23-23v46" stroke="#70B8FF" stroke-opacity=".58" stroke-width="1.5"/>
+            <circle cx="119" cy="110" r="4" fill="#72B9FF"/><circle cx="430" cy="309" r="4" fill="#72B9FF"/>
+            <path d="M98 370h-13m322 0h17M138 104l-9-9m253 232 12 11" stroke="#B3DCFF" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="float-tag tag-top">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7l8-4Z" stroke="currentColor" stroke-width="1.7"/><path d="m8.5 12 2.2 2.2 4.8-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Systems that work together
+          </div>
+          <div class="float-tag tag-bottom">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V9l8-5 8 5v10M8 19v-6h8v6M2 19h20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Built around real needs
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip" aria-label="Our approach">
+      <div class="trust-inner container">
+        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7l8-4Z" stroke="currentColor" stroke-width="1.7"/><path d="m8.5 12 2.2 2.2 4.8-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Customer projects and in-house innovation</div>
+        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16M6 19V9l6-4 6 4v10M9 19v-6h6v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Whole-system engineering</div>
+        <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 17 9 12l3 3 7-8M14 7h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>From need to verified delivery</div>
+      </div>
+    </section>
+
+    <section class="section services" id="services">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Our capabilities</p>
+          <h2>Bring the disciplines together.</h2>
+          <p>We take on customer projects and develop our own innovations, bringing together the engineering disciplines each challenge needs.</p>
+        </div>
+        <div class="service-grid">
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>Systems Engineering &amp; Integration</h3><p>Requirements, system architecture, interface coordination and integration across electrical, mechanical, digital and infrastructure components.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5m0 14h16M7 15l4-4 3 2 5-6m-1 0h1v1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Engineering Consulting &amp; Feasibility</h3><p>Technical assessments, options analysis and project planning to support informed investment and implementation decisions.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v20m-7-16h11a4 4 0 0 1 0 8H8a4 4 0 0 0 0 8h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>Electrical &amp; Electronic Engineering</h3><p>Design and improvement of electrical systems, electronic devices, instrumentation and control solutions.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9a8 8 0 0 1 13.6-5.7L20 6m0-5v5h-5M20 15a8 8 0 0 1-13.6 5.7L4 18m0 5v-5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Telecommunications, Networks &amp; IT</h3><p>Planning, deployment, integration and optimization of communication networks and IT infrastructure.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v12H4zM8 20h8m-4-4v4M7 8h10m-10 4h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Software &amp; Digital Solutions</h3><p>Websites, applications, business software and connected systems that simplify workflows and service delivery.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v4m0 10v4M4.2 7.5l3.5 2m8.6 5 3.5 2m0-9-3.5 2m-8.6 5-3.5 2M3 12h4m10 0h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <h3>Automation &amp; Process Improvement</h3><p>Operational assessments and practical technology, controls and automation to reduce inefficiency and improve consistency.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h16M6 20V8h12v12M9 8V4h6v4M9 12h2m2 0h2m-6 4h2m2 0h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Mechanical, HVAC &amp; Building Systems</h3><p>Engineering support for equipment, heating, ventilation, air conditioning and maintainable building systems.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 20h18M5 20V9l7-5 7 5v11M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Civil &amp; Infrastructure Engineering</h3><p>Planning, design coordination and project support for civil works, infrastructure and connected utilities.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m14 3 7 7-4 1-4 4-1 4-3-3-4-1 4-4 1-4 4-4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m5 19-2 2m5-3-3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>Product Development &amp; Prototyping</h3><p>Concept development, technical design, prototypes and testing to assess usefulness and commercial potential.</p>
+          </article>
+          <article class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5m0 14h16M8 15l3-3 2 2 5-6m-1 0h1v1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Implementation, Testing &amp; Commissioning</h3><p>Delivery coordination, installation, integration, testing and commissioning against agreed requirements.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="about-grid container">
+        <div class="about-visual" role="img" aria-label="Blueprint-style illustration representing thoughtful engineering">
+          <svg viewBox="0 0 360 300" fill="none" aria-hidden="true">
+            <path d="M37 258h286M58 275h244M72 92h210M87 76h181" stroke="#8AC7FF" stroke-opacity=".55" stroke-width="1.5"/>
+            <path d="M82 251V121l55-34 55 34v130m-110-97h110m-110 42h110m-75-74v129m40-129v129" stroke="#8AC7FF" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M193 251V152l42-26 42 26v99m-84-67h84m-84 33h84m-56-54v88m29-88v88" stroke="#D3EBFF" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M94 121h85m-82 42h89m-90 43h91M207 152h56m-57 32h58m-59 34h60" stroke="#8AC7FF" stroke-opacity=".8" stroke-width="1.5"/>
+            <circle cx="302" cy="80" r="17" stroke="#8AC7FF" stroke-opacity=".7" stroke-width="1.5"/><path d="M302 70v20m-10-10h20" stroke="#8AC7FF" stroke-width="1.5"/>
+          </svg>
+          <div class="about-caption">Strong foundations. Smarter outcomes.</div>
+        </div>
+        <div class="about-copy">
+          <div class="section-heading">
+            <p class="eyebrow">About Cypress</p>
+            <h2>One partner, from problem to proof.</h2>
+            <p>We are a Nigeria-based engineering services company helping businesses solve technical problems, improve operations, and develop new products and systems. We combine engineering, science and technology with systems engineering principles to coordinate practical solutions.</p>
+          </div>
+          <ul class="check-list">
+            <li><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Assess the need and define clear requirements</li>
+            <li><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Coordinate disciplines into a workable design</li>
+            <li><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Implement, integrate and verify against the need</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section services" aria-labelledby="project-types-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">How we innovate</p>
+          <h2 id="project-types-title">Customer challenges. New possibilities.</h2>
+          <p>We apply our capabilities to customer needs and to ideas with a credible path to market.</p>
+        </div>
+        <div class="project-types">
+          <article class="project-type">
+            <h3>Customer projects</h3>
+            <p>We help organizations create or improve products, processes, infrastructure and services. Each project starts with your needs and measurable objectives—whether you want to improve reliability, reduce operating costs, increase capacity or support revenue growth.</p>
+          </article>
+          <article class="project-type">
+            <h3>Internal innovation</h3>
+            <p>We identify unmet needs and business opportunities, then assess feasibility, develop and test ideas, and invest in projects with a credible path to market.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section why-section" id="why">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Why Cypress Engineering</p>
+          <h2>Good solutions work in the real world.</h2>
+          <p>We connect technical choices to the people, processes and operating conditions that determine whether a solution succeeds.</p>
+        </div>
+        <div class="why-grid">
+          <article class="why-card"><h3>Start with the business need</h3><p>We define the problem, desired outcome and constraints before proposing a solution.</p></article>
+          <article class="why-card"><h3>Consider the whole system</h3><p>People, processes, equipment, software and infrastructure need to work together.</p></article>
+          <article class="why-card"><h3>Balance performance and value</h3><p>We weigh technical choices against cost, usability, maintainability and business objectives.</p></article>
+          <article class="why-card"><h3>Define success before delivery</h3><p>Requirements, milestones and measurable acceptance criteria give projects direction.</p></article>
+          <article class="why-card"><h3>Design for real conditions</h3><p>We account for power, connectivity, parts access, maintenance and user capabilities.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section project-cta">
+      <div class="project-cta-inner container">
+        <div>
+          <p class="eyebrow">Have a problem to solve or an idea to develop?</p>
+          <h2>Let’s find a practical way forward.</h2>
+          <p>Bring us your operational challenge, improvement opportunity or product concept. We’ll help define the need and explore the next steps.</p>
+        </div>
+        <a class="button" href="#contact">Start a conversation <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </section>
+
+    <section class="app-download" id="app" aria-labelledby="app-download-title">
+      <div class="app-download-inner container">
+        <div class="app-download-copy">
+          <span class="app-download-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M10 18.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+          <div><h2 id="app-download-title">Mobile app</h2><p>Download details will be added here when available.</p></div>
+        </div>
+        <span class="app-download-status">Download link coming soon</span>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="contact-grid container">
+        <div class="contact-copy">
+          <p class="eyebrow">Get in touch</p>
+          <h2>Start with the problem you want to solve.</h2>
+          <p>Call or WhatsApp us directly to discuss your requirements. We’ll add the company email and connect the enquiry form once your domain email is ready.</p>
+          <div class="contact-details">
+            <div class="contact-detail">
+              <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h3l2 5-2.5 1.5a14 14 0 0 0 5 5L16 12l5 2v3c0 1.1-.9 2-2 2C10.7 19 5 13.3 5 6c0-1.7.7-3 2-3Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span><small>Call or WhatsApp</small><a href="tel:+2348163949195">+234 816 394 9195</a></span>
+            </div>
+            <div class="contact-detail">
+              <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/></svg></span>
+              <span><small>Based in</small>Nigeria</span>
+            </div>
+            <div class="contact-detail">
+              <span class="detail-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span><small>Email</small>Company email to be added</span>
+            </div>
+          </div>
+        </div>
+        <form class="form-card" id="contact-form">
+          <h3>Project enquiry</h3>
+          <p class="form-intro">Email enquiries will be enabled when your company email is ready.</p>
+          <fieldset class="form-fields" disabled>
+          <div class="form-row">
+            <div class="field"><label for="full-name">Full name</label><input id="full-name" name="name" autocomplete="name" placeholder="Your name" required></div>
+            <div class="field"><label for="contact-info">Phone or email</label><input id="contact-info" name="contact" autocomplete="email" placeholder="How can we reach you?" required></div>
+          </div>
+          <div class="field"><label for="service">What would you like to discuss?</label>
+            <select id="service" name="service" required>
+              <option value="" selected disabled>Choose a topic</option>
+              <option>Customer project</option><option>Systems engineering &amp; integration</option>
+              <option>Consulting &amp; feasibility</option><option>Electrical &amp; electronic engineering</option>
+              <option>Telecommunications, networks &amp; IT</option><option>Software &amp; digital solutions</option>
+              <option>Automation &amp; process improvement</option><option>Mechanical, HVAC &amp; building systems</option>
+              <option>Civil &amp; infrastructure engineering</option><option>Product development &amp; prototyping</option>
+              <option>Project implementation, testing &amp; commissioning</option><option>Internal innovation</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label for="message">Briefly describe the need or idea</label><textarea id="message" name="message" placeholder="What are you trying to create, improve or solve?" required></textarea></div>
+          <button class="button" type="submit" disabled>Email form coming soon</button>
+          </fieldset>
+          <p class="privacy-note">For now, contact us by phone or use the WhatsApp button. Form entries are not collected.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <p>© <span id="year"></span> Cypress Engineering Services Nigeria Limited. All rights reserved.</p>
+      <div class="footer-links"><a href="#services">Services</a><a href="#about">About</a><a href="#app">App</a><a href="#contact">Contact</a><a href="tel:+2348163949195">+234 816 394 9195</a></div>
+    </div>
+  </footer>
+  <a class="whatsapp-float" href="https://wa.me/2348163949195?text=Hello%20Cypress%20Engineering%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" aria-label="Chat with Cypress Engineering on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 11.7a8.5 8.5 0 0 1-12.6 7.4L4 20l.9-3.7a8.5 8.5 0 1 1 15.6-4.6Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 8.5c.3-.6.6-.6 1-.6h.4c.2 0 .4.1.5.4l.7 1.7c.1.2 0 .4-.1.6l-.5.6c-.2.2-.2.4 0 .6.4.7 1.1 1.4 1.8 1.8.2.1.4.1.6-.1l.7-.8c.2-.2.4-.2.6-.1l1.6.8c.3.1.4.3.4.5 0 .4-.2 1-.6 1.3-.4.4-1 .6-1.7.5-1-.2-2.3-.8-3.5-1.9-1.2-1.1-2-2.5-2.2-3.5-.1-.7 0-1.3.3-1.8Z" fill="currentColor"/></svg>
+    Chat on WhatsApp
+  </a>
+  <script>
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+
+    menuToggle.addEventListener("click", () => {
+      const isExpanded = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", String(!isExpanded));
+      menuToggle.setAttribute("aria-label", isExpanded ? "Open navigation menu" : "Close navigation menu");
+      navLinks.classList.toggle("is-open", !isExpanded);
+    });
+
+    navLinks.addEventListener("click", (event) => {
+      if (event.target.closest("a")) {
+        navLinks.classList.remove("is-open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open navigation menu");
+      }
+    });
+
+    document.querySelector("#year").textContent = new Date().getFullYear();
+
+  </script>
+</body>
+</html>
